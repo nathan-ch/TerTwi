@@ -3,7 +3,6 @@ import { Card } from 'react-bootstrap';
 import { LikeOutlined } from '@ant-design/icons';
 
 const PostsListMaker = ( {data}) =>{
-    console.log({data});
     return (
       <div>
         {data.map( post =>
