@@ -1,4 +1,11 @@
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect
+} from "react-router-dom";
 import { Card } from 'react-bootstrap';
 import { LikeOutlined } from '@ant-design/icons';
 
@@ -15,7 +22,7 @@ const PostsListMaker = ( {data}) =>{
                   {post.text}{' '}
                 </p>
                 <footer className="blockquote-footer">
-                  {post.author}<cite title="Source Title"></cite>
+                <Link to={`/user/${post.authorId}`}>{post.author}</Link>
                 </footer>
               </blockquote>
             </Card.Body>

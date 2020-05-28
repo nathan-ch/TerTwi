@@ -14,12 +14,13 @@ import store from './_Redux/store'
 import Register from './pages/Register';
 import Profile from './pages/Profile';
 import Home from './pages/Home';
+import User from './pages/User';
+
 import './App.css';
 
 function App() {
 
   const isAuthenticated = useSelector(state => state.authReducer.isAuthenticated)
-  const dispatch = useDispatch()
 
   return (
     <Provider store={store}>
@@ -34,6 +35,9 @@ function App() {
           </Route>
           <Route path='/profil'>
             <Profile />
+          </Route>
+          <Route path={`/user/:userId`}>
+            <User />
           </Route>
           <Route path='/'>
             <Home />

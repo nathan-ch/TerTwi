@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from "react-router-dom";
 import { Container, Row, Col } from 'react-bootstrap';
 import PostsListMaker from '../Components/List';
 
 
 const Profile = () => {
     const [postsList, setPostsList] = useState([]);
+    const [userId, setUserId] = useState(null)
+
     const userToken = useSelector(state => state.authReducer.userToken)
-    const userId = useSelector(state => state.authReducer.userId)
 
-
+    let { id } = useParams()
 
     useEffect(() => {
+        setUserId(id)
         fetchUserPosts(createPostsList)
       },[]);
 
@@ -33,6 +36,7 @@ const Profile = () => {
     }
 
     const createPostsList = (posts) => {
+        console.log("ça créé la liste");
         let array =[]
           for (let i = 0; i < posts.length; i++) {
             let post = posts[i]
@@ -57,16 +61,8 @@ const Profile = () => {
 
     return (
         <Container>
-            <h1 className="text-center">Ton profil</h1>
-            <Row>
-                <Col>
-                    <h2>Tes informations</h2>
-                </Col>
-                <Col>
-                    <h2>Tes twiit</h2>
-                    <PostsListMaker data={postsList} />
-                </Col>
-            </Row>
+            <h1 className="text-center">Le profil de</h1>
+            <PostsListMaker data={postsList} />
         </Container>
 
     )  
