@@ -3,8 +3,10 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux'
 import NavNav from './Components/NavNav';
 import Login from './pages/Login';
 import { Provider } from 'react-redux'
@@ -15,16 +17,20 @@ import Home from './pages/Home';
 import './App.css';
 
 function App() {
+
+  const isAuthenticated = useSelector(state => state.authReducer.isAuthenticated)
+  const dispatch = useDispatch()
+
   return (
     <Provider store={store}>
     <Router>
       <NavNav />
       <Switch>
           <Route path='/connexion'>
-            <Login />
+            {isAuthenticated ? <Redirect to="/" /> : <Login />}
           </Route>
           <Route path='/inscription'>
-            <Register />
+          {isAuthenticated ? <Redirect to="/" /> : <Register />}
           </Route>
           <Route path='/profil'>
             <Profile />

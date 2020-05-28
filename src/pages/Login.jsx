@@ -1,12 +1,14 @@
 import React from 'react';
-import { loginUser } from '../_Redux/Actions'
+import { loginUser } from '../_Redux/Actions';
 import { Form, Input, Button, Checkbox } from 'antd';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 const Login = (props) => {
 
+  const isAuthenticated = useSelector(state => state.authReducer.isAuthenticated)
   const dispatch = useDispatch()
+
   const onFinish = values => {
     dispatch(loginUser(values.username, values.password))
   };

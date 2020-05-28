@@ -9,6 +9,10 @@ import { REGISTER_REQUEST } from './Type'
 import { REGISTER_SUCCESS } from './Type'
 import { REGISTER_FAILURE } from './Type'
 
+import { NEWPOST_REQUEST } from './Type'
+import { NEWPOST_SUCCESS } from './Type'
+import { NEWPOST_FAILURE } from './Type'
+
 
 // Actions for Login
 export const requestLogin = (identifier, password) => {
@@ -65,8 +69,9 @@ export const loginUser = (identifier, password) => {
             return Promise.reject(user)
           } else {
             console.log(user);
-            localStorage.setItem('id_token', user.id_token)
-            localStorage.setItem('id_token', user.access_token)
+            localStorage.setItem('id_token', user.jwt)
+            localStorage.setItem('id_user', user.user.id)
+
             dispatch(receiveLogin(user))
             console.log("User connected");
           }
@@ -78,7 +83,6 @@ export const loginUser = (identifier, password) => {
 function requestLogout() {
     return {
       type: LOGOUT_REQUEST,
-      isFetching: true,
       isAuthenticated: true
     }
   }
@@ -86,17 +90,15 @@ function requestLogout() {
   function receiveLogout() {
     return {
       type: LOGOUT_SUCCESS,
-      isFetching: false,
-      isAuthenticated: false
+      isAuthenticated: false,
+      userToken : false,
+      userId : false
     }
   }
   
   // Logs the user out
   export function logoutUser() {
     return dispatch => {
-      dispatch(requestLogout())
-      localStorage.removeItem('id_token')
-      localStorage.removeItem('access_token')
       dispatch(receiveLogout())
     }
   }
@@ -141,7 +143,6 @@ function requestLogout() {
   
       return dispatch => {
           dispatch(requestRegister(username, email, password))
-          console.log(body);
           return fetch('https://api-minireseausocial.mathis-dyk.fr/auth/local/register',{
             method : 'POST',
             headers: { 'Content-Type':'application/json' },
@@ -158,10 +159,74 @@ function requestLogout() {
               return Promise.reject(user)
             } else {
               console.log(user);
-              localStorage.setItem('id_token', user.id_token)
-              localStorage.setItem('id_token', user.access_token)
+              localStorage.setItem('id_token', user.jwt)
               dispatch(receiveRegister(user))
-              console.log("User registered and connected");
+              console.log("User registered");
+              dispatch(loginUser(username, password))
+            }
+          }).catch(err => console.log("Error: ", err))
+      }
+  }
+
+  // Actions for new Post
+  export const requestNewPost = (userId, content) => {
+    return {
+      type: NEWPOST_REQUEST,
+      isFetching : true,
+      isAuthenticated : true,
+      userId,
+      content,
+    }
+  }
+  
+  export const receiveNewPost = (user) => {
+    return {
+      type: NEWPOST_SUCCESS,
+      isFetching : false,
+      isAuthenticated : true,
+      id_token : user.id_token
+    }
+  }
+  
+  export const newPostError = (message) => {
+      return {
+        type: NEWPOST_FAILURE,
+        isFetching : false,
+        isAuthenticated : false,
+        message
+      }
+    }
+  
+  export const sendNewPost = (userId, content, userToken) => {
+    
+      const body = {
+        user: userId,
+        text : content
+      }
+  
+      return dispatch => {
+          dispatch(requestNewPost(content, userId, userToken))
+          return fetch('https://api-minireseausocial.mathis-dyk.fr/posts',{
+            method : 'POST',
+            headers: {
+              'Authorization': `Bearer ${userToken}`, 
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+            }
+          )
+          .then(response =>
+            response.json()
+          .then(post => ({ post, response }))
+          )
+          .then(({ post, response }) =>  {
+            if (!response.ok) {
+              dispatch(newPostError(post.message))
+              return Promise.reject(post)
+            } else {
+              localStorage.setItem('newPost', post.text)
+              dispatch(receiveNewPost(post))
+              console.log("New post sended");
             }
           }).catch(err => console.log("Error: ", err))
       }

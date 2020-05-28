@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 import Jumbo from '../Components/Jumbo';
 import PostsListMaker from '../Components/List';
+import InputTwiit from '../Components/inputTwiit';
+import { Container } from 'react-bootstrap';
 
 const Home = () => {
     const [postsList, setPostsList] = useState([]);
 
+    const newPost = useSelector(state => state.authReducer.newPost)
+
+
     useEffect(() => {
-        fetchBlocs(createPostsList)
-      },[]);
+        fetchPosts(createPostsList)
+      },[newPost]);
 
       useEffect(() => {
       },[postsList]);
 
-    const fetchBlocs = (callback) =>{
+    const fetchPosts = (callback) =>{
         const URL = `https://api-minireseausocial.mathis-dyk.fr/posts`;
         fetch(URL)
             .then((res) => res.json())
@@ -40,12 +46,15 @@ const Home = () => {
             }
             array.push(data)
           }
-        setPostsList(array)
+        setPostsList(array.reverse())
       }
     return (
         <>
             <Jumbo />
-            <PostsListMaker data={postsList}/>
+            <Container>
+                <InputTwiit/>
+                <PostsListMaker data={postsList} />
+            </Container>
         </>
     )  
 }

@@ -1,11 +1,16 @@
 import { combineReducers } from 'redux'
 import {
-    LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS
+    LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS, NEWPOST_FAILURE, NEWPOST_SUCCESS, NEWPOST_REQUEST
   } from './Type'
 
   const initialState={
     isFetching: false,
-    isAuthenticated: localStorage.getItem('id_token') ? true : false
+    isAuthenticated: localStorage.getItem('id_token') ? true : false,
+    userId : localStorage.getItem('id_user') ? localStorage.getItem('id_user') : false,
+    userToken : localStorage.getItem('id_token') ? localStorage.getItem('id_token') : false,
+    newPost : localStorage.getItem('newPost') ? localStorage.getItem('newPost') : false,
+
+
   }
 
   function Reducer(state = initialState , action) {
@@ -14,13 +19,14 @@ import {
       return Object.assign({}, state, {
         isFetching: true,
         isAuthenticated: false,
-        user: action.creds
       })
     case LOGIN_SUCCESS:
       return Object.assign({}, state, {
         isFetching: false,
         isAuthenticated: true,
-        errorMessage: ''
+        errorMessage: '',
+        userId : localStorage.getItem('id_user'),
+        userToken : localStorage.getItem('id_token')
       })
     case LOGIN_FAILURE:
       return Object.assign({}, state, {
@@ -30,8 +36,20 @@ import {
       })
     case LOGOUT_SUCCESS:
       return Object.assign({}, state, {
-        isFetching: true,
-        isAuthenticated: false
+        isAuthenticated: false,
+        userId : false,
+        userToken : false,
+        newPost: false
+      })
+      case NEWPOST_SUCCESS:
+      return Object.assign({}, state, {
+        newPost : localStorage.getItem('newPost'),
+      })
+      case NEWPOST_FAILURE:
+      return Object.assign({}, state, {
+      })
+      case NEWPOST_REQUEST:
+      return Object.assign({}, state, {
       })
     default:
       return state

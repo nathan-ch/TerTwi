@@ -34,7 +34,7 @@ const NavNav = () => {
                     {isAuthenticated &&
                     <div>
                     <NavDropdown.Item><Link to="/profil">Profil</Link></NavDropdown.Item>
-                    <Button onClick={disconnect} className="ml-2" variant="outline-warning">Se déconnecter</Button>
+                    <Button onClick={disconnect} className="ml-2" variant="outline-danger">Se déconnecter</Button>
                     </div>
                     }
                 </NavDropdown>
