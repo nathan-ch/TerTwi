@@ -26,7 +26,7 @@ function App() {
           <Route path='/inscription'>
             <Register />
           </Route>
-          <Route path='profil'>
+          <Route path='/profil'>
             <Profile />
           </Route>
           <Route path='/'>

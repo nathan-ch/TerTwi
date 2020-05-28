@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux'
 import Jumbo from '../Components/Jumbo';
 import PostsListMaker from '../Components/List';
 
@@ -46,7 +45,6 @@ const Home = () => {
     return (
         <>
             <Jumbo />
-             
             <PostsListMaker data={postsList}/>
         </>
     )  

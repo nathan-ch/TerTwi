@@ -1,29 +1,42 @@
 import React from 'react';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from "react-router-dom";
 import { loginUser, logoutUser } from '../_Redux/Actions'
 import { useSelector, useDispatch } from 'react-redux'
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap'
+import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap'
 
 const NavNav = () => {
 
-const isAuthenticated = useSelector(state => state.authReducer.isAuthenticated)
-console.log(isAuthenticated);
-const dispatchLogin = useDispatch(loginUser())
-const dispatchlogout = useDispatch(logoutUser())
+    const dispatch = useDispatch()
+    const isAuthenticated = useSelector(state => state.authReducer.isAuthenticated)
+
+    const disconnect = () => {
+        dispatch(logoutUser())
+    }
 
     return (
         <Navbar bg="light" expand="lg">
-            <Navbar.Brand href="/">TerTwii</Navbar.Brand>
+            <Link to="/"><Navbar.Brand >TerTwii</Navbar.Brand></Link>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
-                <Nav.Link href="/">Accueil</Nav.Link>
+                <Nav.Link><Link to="/">Accueil</Link></Nav.Link>
                 <NavDropdown title="Compte" id="basic-nav-dropdown">
                     {!isAuthenticated && 
                     <div>
-                    <NavDropdown.Item href="/connexion">Connexion</NavDropdown.Item>
-                    <NavDropdown.Item href="/inscription">Inscription</NavDropdown.Item></div>}
-                    {isAuthenticated && 
-                    <NavDropdown.Item href="/profil">Profil</NavDropdown.Item>}
+                    <NavDropdown.Item><Link to="/connexion">Connexion</Link></NavDropdown.Item>
+                    <NavDropdown.Item><Link to="/inscription">Inscription</Link></NavDropdown.Item>
+                    </div>}
+                    {isAuthenticated &&
+                    <div>
+                    <NavDropdown.Item><Link to="/profil">Profil</Link></NavDropdown.Item>
+                    <Button onClick={disconnect} className="ml-2" variant="outline-warning">Se déconnecter</Button>
+                    </div>
+                    }
                 </NavDropdown>
                 </Nav>
             </Navbar.Collapse>

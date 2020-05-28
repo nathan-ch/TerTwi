@@ -1,22 +1,14 @@
-import React, { useState } from 'react';
-import { loginUser, logoutUser } from '../_Redux/Actions'
+import React from 'react';
+import { loginUser } from '../_Redux/Actions'
 import { Form, Input, Button, Checkbox } from 'antd';
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
 const Login = (props) => {
- const [user, setUser] = useState({username:'', password:'', submitted:false})
 
-  const authReducer = useSelector(state => state.authReducer)
-  console.log(authReducer.isAuthenticated);
-  const dispatchLogin = useDispatch(loginUser())
-  const dispatchlogout = useDispatch(logoutUser())
-
-
+  const dispatch = useDispatch()
   const onFinish = values => {
-    console.log('Received values of form: ', values);
-    const creds = {username:values.username, password: values.password }
-    dispatchLogin(creds)
+    dispatch(loginUser(values.username, values.password))
   };
 
   return (

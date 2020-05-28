@@ -5,26 +5,18 @@ import {
   Tooltip,
   Button,
 } from 'antd';
+import { registerUser } from '../_Redux/Actions';
+import { useDispatch } from 'react-redux';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
-const tailFormItemLayout = {
-  wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 16,
-      offset: 8,
-    },
-  },
-};
 
-const Register = () => {
-  const [form] = Form.useForm();
+const Register = (props) => {
+    const dispatch = useDispatch()
+    
+    const [form] = Form.useForm();
 
-  const onFinish = values => {
-    console.log('Received values of form: ', values);
+    const onFinish = values => {
+        dispatch(registerUser(values.username,values.email, values.password))
   };
 
   return (
@@ -54,7 +46,7 @@ const Register = () => {
         </Form.Item>
 
         <Form.Item
-            name="Pseudo"
+            name="username"
             label={
             <span>
                 Username&nbsp;
