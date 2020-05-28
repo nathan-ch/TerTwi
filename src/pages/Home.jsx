@@ -9,6 +9,7 @@ const Home = () => {
     const [postsList, setPostsList] = useState([]);
 
     const newPost = useSelector(state => state.authReducer.newPost)
+    const isAuthenticated = useSelector(state => state.authReducer.isAuthenticated)
 
 
     useEffect(() => {
@@ -52,7 +53,7 @@ const Home = () => {
         <>
             <Jumbo />
             <Container>
-                <InputTwiit/>
+                {isAuthenticated && <InputTwiit/>}
                 <PostsListMaker data={postsList} />
             </Container>
         </>

@@ -1,15 +1,15 @@
 import { combineReducers } from 'redux'
 import {
     LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT_SUCCESS, NEWPOST_FAILURE, NEWPOST_SUCCESS, NEWPOST_REQUEST
-  } from './Type'
+  } from './Type';
+import Cookies from 'js-cookie';
 
   const initialState={
     isFetching: false,
-    isAuthenticated: localStorage.getItem('id_token') ? true : false,
-    userId : localStorage.getItem('id_user') ? localStorage.getItem('id_user') : false,
-    userToken : localStorage.getItem('id_token') ? localStorage.getItem('id_token') : false,
-    newPost : localStorage.getItem('newPost') ? localStorage.getItem('newPost') : false,
-
+    isAuthenticated: Cookies.get('id_token') ? true : false,
+    userId : Cookies.get('id_user') ? Cookies.get('id_user') : false,
+    userToken : Cookies.get('id_token') ? Cookies.get('id_token') : false,
+    newPost : Cookies.get('newPost') ? Cookies.get('newPost') : false,
 
   }
 
@@ -25,8 +25,8 @@ import {
         isFetching: false,
         isAuthenticated: true,
         errorMessage: '',
-        userId : localStorage.getItem('id_user'),
-        userToken : localStorage.getItem('id_token')
+        userId : Cookies.get('id_user'),
+        userToken : Cookies.get('id_token')
       })
     case LOGIN_FAILURE:
       return Object.assign({}, state, {
@@ -43,7 +43,7 @@ import {
       })
       case NEWPOST_SUCCESS:
       return Object.assign({}, state, {
-        newPost : localStorage.getItem('newPost'),
+        newPost : Cookies.get('newPost'),
       })
       case NEWPOST_FAILURE:
       return Object.assign({}, state, {

@@ -12,8 +12,7 @@ import { REGISTER_FAILURE } from './Type'
 import { NEWPOST_REQUEST } from './Type'
 import { NEWPOST_SUCCESS } from './Type'
 import { NEWPOST_FAILURE } from './Type'
-
-
+import Cookies from 'js-cookie';
 // Actions for Login
 export const requestLogin = (identifier, password) => {
   return {
@@ -66,11 +65,12 @@ export const loginUser = (identifier, password) => {
         .then(({ user, response }) =>  {
           if (!response.ok) {
             dispatch(loginError(user.message))
+            alert("email/usernam ou mot de passe incorrect")
             return Promise.reject(user)
           } else {
             console.log(user);
-            localStorage.setItem('id_token', user.jwt)
-            localStorage.setItem('id_user', user.user.id)
+            Cookies.set('id_token', user.jwt)
+            Cookies.set('id_user', user.user.id)
 
             dispatch(receiveLogin(user))
             console.log("User connected");
@@ -159,7 +159,7 @@ function requestLogout() {
               return Promise.reject(user)
             } else {
               console.log(user);
-              localStorage.setItem('id_token', user.jwt)
+              Cookies.set('id_token', user.jwt)
               dispatch(receiveRegister(user))
               console.log("User registered");
               dispatch(loginUser(username, password))
@@ -224,7 +224,7 @@ function requestLogout() {
               dispatch(newPostError(post.message))
               return Promise.reject(post)
             } else {
-              localStorage.setItem('newPost', post.text)
+              Cookies.set('newPost', post.text)
               dispatch(receiveNewPost(post))
               console.log("New post sended");
             }

@@ -36,7 +36,7 @@ function App() {
           <Route path='/profil'>
             <Profile />
           </Route>
-          <Route path={`/user/:userId`}>
+          <Route path={`/user/:id`}>
             <User />
           </Route>
           <Route path='/'>

@@ -15,11 +15,11 @@ const Profile = () => {
 
     useEffect(() => {
         setUserId(id)
-        fetchUserPosts(createPostsList)
       },[]);
 
       useEffect(() => {
-      },[postsList]);
+        fetchUserPosts(createPostsList)
+      },[userId]);
 
     const fetchUserPosts = (callback) =>{
         const URL = `https://api-minireseausocial.mathis-dyk.fr/posts?user.id=${userId}`;
@@ -36,7 +36,6 @@ const Profile = () => {
     }
 
     const createPostsList = (posts) => {
-        console.log("ça créé la liste");
         let array =[]
           for (let i = 0; i < posts.length; i++) {
             let post = posts[i]
